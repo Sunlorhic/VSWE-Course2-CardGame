@@ -3,6 +3,7 @@ package players;
 import java.util.ArrayList;
 
 import cards.Card;
+import cards.CardSuits;
 import cards.CardTable;
 import cards.Deck;
 import cards.ICardHolder;
@@ -127,5 +128,14 @@ public abstract class Player implements ICardHolder {
 	public int maxCards()
 	{
 		return this.maxHandSize;
+	}
+
+	protected boolean hasCardOfSuit(CardSuits suit) 
+	{
+		for( Card card : this.hand )
+		{
+			if( card.getSuit() == suit ) return true;
+		}
+		return false;
 	}
 }

@@ -1,10 +1,14 @@
 package players;
 
+import java.util.Random;
+
 import cards.Card;
 import cards.CardSuits;
 import cards.CardTable;
 
 public class BotPlayer extends Player {
+	
+	private static Random randomGen = new Random();
 	
 	public BotPlayer(String name)
 	{
@@ -12,6 +16,26 @@ public class BotPlayer extends Player {
 	}
 
 	public void selectNextCardToPlay(CardTable table) 
+	{
+		int randomInt = randomGen.nextInt(100) + 1;
+		int mistakeChance = 30;
+		
+		if( randomInt <= mistakeChance )
+		{
+			this.selectRandomCard();
+		}
+		else
+		{
+			this.selectBestMove(table);
+		}
+	}
+	
+	private void selectRandomCard() 
+	{
+		this.selectCardIndex( randomGen.nextInt( this.numberOfCards() ) );
+	}
+
+	private void selectBestMove(CardTable table)
 	{
 		if( table.isEmpty() )
 		{
@@ -38,7 +62,7 @@ public class BotPlayer extends Player {
 			}
 		}
 	}
-	
+
 	private Card highestValueCard(CardSuits suit) 
 	{
 		Card highCard = null;
@@ -89,15 +113,6 @@ public class BotPlayer extends Player {
 	private void selectLowestValueCard()
 	{
 		this.selectLowestValueCard(null);
-	}
-
-	private boolean hasCardOfSuit(CardSuits suit) 
-	{
-		for( Card card : this.hand )
-		{
-			if( card.getSuit() == suit ) return true;
-		}
-		return false;
 	}
 
 }
