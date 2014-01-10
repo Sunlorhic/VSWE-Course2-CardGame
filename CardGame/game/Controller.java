@@ -7,6 +7,7 @@ import cards.Card;
 import cards.CardTable;
 import cards.Deck;
 import players.BotPlayer;
+import players.DifficultyLevel;
 import players.Player;
 import players.UserPlayer;
 
@@ -21,6 +22,7 @@ public class Controller {
 	private UserInterface userInterface;
 	private CardTable table;
 	private Deck deck;
+	private DifficultyLevel difficultyLevel;
 	private int turns, winningScore;
 	private Player winningPlayer;
 	
@@ -43,10 +45,20 @@ public class Controller {
 	{
 		this.players = new LinkedList<Player>();
 		this.players.add(0, new UserPlayer(userInterface.ask("What is your name Player 1?")));
+		
+		int counter = 1;
+		for( DifficultyLevel d : DifficultyLevel.values() )
+		{
+			this.userInterface.display("  "+counter+". "+d.toString().toLowerCase()+"\n" );
+			counter++;
+		}
+		int diffLevel = this.userInterface.askForIntInRange("What difficulty would you like?", 1, DifficultyLevel.values().length);
+		this.difficultyLevel = DifficultyLevel.values()[diffLevel - 1];
+		
 		for( int i = 1; i < 4; i++ )
 		{
 			String name = "Bot"+i;
-			this.players.add(i, new BotPlayer(name));
+			this.players.add(i, new BotPlayer(name, this.difficultyLevel));
 		}
 		
 		this.winningPlayer = null;

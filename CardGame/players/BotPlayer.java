@@ -10,17 +10,19 @@ public class BotPlayer extends Player {
 	
 	private static Random randomGen = new Random();
 	
-	public BotPlayer(String name)
+	private DifficultyLevel difficultyLevel;
+	
+	public BotPlayer(String name, DifficultyLevel difficultyLevel)
 	{
 		super(name);
+		this.difficultyLevel = difficultyLevel;
 	}
 
 	public void selectNextCardToPlay(CardTable table) 
 	{
 		int randomInt = randomGen.nextInt(100) + 1;
-		int mistakeChance = 30;
 		
-		if( randomInt <= mistakeChance )
+		if( randomInt <= this.difficultyLevel.getMistakeChance() )
 		{
 			this.selectRandomCard();
 		}
