@@ -17,7 +17,7 @@ public enum DifficultyLevel {
 		this.mistakeChance = mistakeChance;
 	}
 	
-	int getMistakeChance()
+	public int getMistakeChance()
 	{
 		return this.mistakeChance;
 	}
