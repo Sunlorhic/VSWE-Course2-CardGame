@@ -46,12 +46,7 @@ public class Controller {
 		this.players = new LinkedList<Player>();
 		this.players.add(0, new UserPlayer(userInterface.ask("What is your name Player 1?")));
 		
-		int counter = 1;
-		for( DifficultyLevel d : DifficultyLevel.values() )
-		{
-			this.userInterface.display("  "+counter+". "+d.toString().toLowerCase()+"\n" );
-			counter++;
-		}
+		this.showDifficultyLevels();
 		int diffLevel = this.userInterface.askForIntInRange("What difficulty would you like?", 1, DifficultyLevel.values().length);
 		this.difficultyLevel = DifficultyLevel.values()[diffLevel - 1];
 		
@@ -168,6 +163,17 @@ public class Controller {
 			scoreBoard += player.getName() + " has " + player.getPoints() + " point" + s + "\n";
 		}
 		this.userInterface.display(scoreBoard);
+	}
+	
+	private void showDifficultyLevels()
+	{
+		DifficultyLevel[] levels = DifficultyLevel.values();
+		int longestStr = DifficultyLevel.longestStringVal();
+		String formatStr = "%d. %-"+longestStr+"s - %s%n";
+		for( int i = 0; i < levels.length; i++ )
+		{
+			this.userInterface.display(String.format(formatStr, i+1, levels[i], levels[i].getDescription()));
+		}
 	}
 	
 	private void putPlayerFirst(Player player)
