@@ -36,6 +36,8 @@ public abstract class Player implements ICardHolder {
 		return this.points;
 	}
 	
+	public abstract void selectNextCardToPlay(CardTable table);
+	
 	public Player scoreAPoint()
 	{
 		this.points++;

@@ -21,6 +21,20 @@ public class UserInterface {
 		this.display(question + " ");
 		return this.scanner.nextLine();
 	}
+	
+	public boolean confirm(String question)
+	{
+		while( true )
+		{
+		  String answer = this.ask(question + "[y/n]");
+		  if( answer.charAt(0) == 'Y' || answer.charAt(0) == 'y' ) {
+			  return true;
+		  }
+		  if( answer.charAt(0) == 'N' || answer.charAt(0) == 'n' ) {
+			  return false;
+		  }
+		}
+	}
 
 	public int askForIntInRange(String question, int min, int max) {
 		this.display(question + " [" + min + "-" + max + "] : ");

@@ -25,14 +25,21 @@ public class Controller {
 	private DifficultyLevel difficultyLevel;
 	private int turns, winningScore;
 	private Player winningPlayer;
+	private boolean playing;
 	
 	public Controller()
 	{
+		this.playing = true;
 		this.initUserControls();
-		this.initPlayers();
-		this.initGameBoard();
 		
-		this.playGame();
+		do
+		{
+		  this.initPlayers();
+		  this.initGameBoard();
+		
+		  this.playGame();
+		}
+		while( playing );
 	}
 	
 	private Controller initUserControls() {
@@ -44,7 +51,10 @@ public class Controller {
 	private Controller initPlayers()
 	{
 		this.players = new LinkedList<Player>();
-		this.players.add(0, new UserPlayer(userInterface.ask("What is your name Player 1?")));
+		this.players.add(0, new UserPlayer(
+		  this.userInterface.ask("What is your name Player 1?"),
+		  this.userInterface
+		));
 		
 		this.showDifficultyLevels();
 		int diffLevel = this.userInterface.askForIntInRange("What difficulty would you like?", 1, DifficultyLevel.values().length);
@@ -98,14 +108,7 @@ public class Controller {
 		
 		for( Player player : this.players )
 		{
-			if( player instanceof UserPlayer )
-			{
-				this.doUserTurn((UserPlayer)player);
-			}
-			else if( player instanceof BotPlayer )
-			{
-				((BotPlayer)player).selectNextCardToPlay(this.table);
-			}
+			player.selectNextCardToPlay(this.table);			
 			
 			Card card = player.playCardOn(this.table);
 			this.userInterface.display(player.getName() + " played the " + card + "\n");
@@ -141,6 +144,7 @@ public class Controller {
 		this.userInterface.line(2);
 		this.userInterface.display("**** " + this.winningPlayer.getName() + " has won the game! *****\n");
 		this.userInterface.line(2);
+		this.playing = this.userInterface.confirm("Would you like to play again?");
 		return this;
 	}
 	
@@ -186,21 +190,6 @@ public class Controller {
 				this.players.add(p);
 			}
 		}
-	}
-
-	private void doUserTurn(UserPlayer player)
-	{
-		String message = "" +
-				"It is your turn " + player.getName() + "\n" +
-				"Your current hand is: \n";
-		for( int i = 0; i < player.numberOfCards(); i++ )
-		{
-			message += "  " + (i+1) + ". " + player.getCardAt(i) + "\n";
-		}
-		
-		this.userInterface.display(message);
-		int selectedIndex = this.userInterface.askForIntInRange("Which card would you like to play?", 1, player.numberOfCards()) - 1;
-		player.selectCardIndex(selectedIndex);
 	}
 	
 	private LinkedList<Player> sortedPlayersByScore()
