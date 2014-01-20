@@ -26,13 +26,17 @@ public class UserInterface {
 	{
 		while( true )
 		{
-		  String answer = this.ask(question + "[y/n]");
-		  if( answer.charAt(0) == 'Y' || answer.charAt(0) == 'y' ) {
-			  return true;
+		  String answer = this.ask(question + " [y/n]");
+		  if( answer.length() > 0 )
+		  {
+			  if( answer.charAt(0) == 'Y' || answer.charAt(0) == 'y' ) {
+				  return true;
+			  }
+			  if( answer.charAt(0) == 'N' || answer.charAt(0) == 'n' ) {
+				  return false;
+			  }
 		  }
-		  if( answer.charAt(0) == 'N' || answer.charAt(0) == 'n' ) {
-			  return false;
-		  }
+		  this.display("Invalid answer...\n");
 		}
 	}
 
@@ -59,6 +63,7 @@ public class UserInterface {
 				break;
 			}
 		}
+		this.scanner.nextLine(); // Clear the leftover line break
 		return result;
 	}
 
